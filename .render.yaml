@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: fes-backend
+    name: FES
     env: docker
     plan: free
     region: frankfurt
