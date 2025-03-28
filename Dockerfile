@@ -5,10 +5,10 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 # Copia el JAR compilado al contenedor
-COPY target/*.jar app.jar
+COPY target/*.jar FES-0.0.1-SNAPSHOT.jar.jar
 
 # Expone el puerto que usa Spring Boot
 EXPOSE 8080
 
 # Comando para ejecutar tu app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "FES-0.0.1-SNAPSHOT.jar.jar"]
