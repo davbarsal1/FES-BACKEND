@@ -2,7 +2,7 @@
 FROM eclipse-temurin:17-jdk-alpine
 
 # Directorio de trabajo
-WORKDIR /app
+WORKDIR /FES
 
 # Copia el JAR compilado al contenedor
 COPY target/*.jar FES-0.0.1-SNAPSHOT.jar.jar
