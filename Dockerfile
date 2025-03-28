@@ -1,14 +1,12 @@
-# Usa una imagen base de Java
+# Etapa 1: Compila el jar
+FROM maven:3.9.4-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Etapa 2: Ejecuta el jar
 FROM eclipse-temurin:17-jdk-alpine
-
-# Directorio de trabajo
-WORKDIR /FES
-
-# Copia el JAR compilado al contenedor
-COPY target/*.jar FES-0.0.1-SNAPSHOT.jar
-
-# Expone el puerto que usa Spring Boot
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Comando para ejecutar tu app
-ENTRYPOINT ["java", "-jar", "FES-0.0.1-SNAPSHOT.jar.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
