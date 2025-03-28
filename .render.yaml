@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: fes-backend
+    env: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: JAVA_OPTS
+        value: "-Xmx512m"
