@@ -14,8 +14,13 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:5173")
-                        .allowedMethods("POST", "GET", "PUT", "DELETE");
+                        .allowedOrigins(
+                                "http://localhost:5173",
+                                "https://fes-frontend-three.vercel.app" // 👈 Añadido dominio de producción
+                        )
+                        .allowedMethods("POST", "GET", "PUT", "DELETE")
+                        .allowedHeaders("*")
+                        .allowCredentials(true); // (opcional si usás cookies o sesiones)
             }
         };
     }
