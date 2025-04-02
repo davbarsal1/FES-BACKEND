@@ -1,0 +1,5 @@
+package com.backend.model;
+
+public enum RANGO {
+    MARINE, SUBOFICIAL, OFICIALALUMNO,OFICIAL,OFICIALGENERAL,ELITE,ZEALOT;
+}

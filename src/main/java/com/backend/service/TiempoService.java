@@ -1,0 +1,55 @@
+package com.backend.service;
+
+import com.backend.model.TiempoEnSala;
+import com.backend.repository.TiempoRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class TiempoService {
+
+    private final TiempoRepository repo;
+
+    public TiempoService(TiempoRepository repo) {
+        this.repo = repo;
+    }
+
+    public TiempoEnSala iniciar(String username) {
+        TiempoEnSala tiempo = repo.findByUsername(username).orElse(new TiempoEnSala());
+        tiempo.setUsername(username);
+        tiempo.setInicio(LocalDateTime.now());
+        tiempo.setActivo(true);
+        return repo.save(tiempo);
+    }
+
+    public TiempoEnSala detener(String username) {
+        Optional<TiempoEnSala> tiempoOpt = repo.findByUsername(username);
+
+        if (tiempoOpt.isPresent()) {
+            TiempoEnSala tiempo = tiempoOpt.get();
+
+            if (tiempo.isActivo() && tiempo.getInicio() != null) {
+                long segundos = Duration.between(tiempo.getInicio(), LocalDateTime.now()).getSeconds();
+                tiempo.setSegundosTotales(tiempo.getSegundosTotales() + segundos);
+            }
+
+            tiempo.setActivo(false);
+            tiempo.setInicio(null);
+            return repo.save(tiempo);
+        }
+
+        throw new RuntimeException("No se encontró sesión activa.");
+    }
+
+    public TiempoEnSala obtenerTiempo(String username) {
+        return repo.findByUsername(username).orElse(null);
+    }
+
+    public List<TiempoEnSala> obtenerTodos() {
+        return repo.findAll();
+    }
+}
