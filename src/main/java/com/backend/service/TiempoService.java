@@ -18,16 +18,25 @@ public class TiempoService {
         this.repo = repo;
     }
 
-    public TiempoEnSala iniciar(String username) {
-        TiempoEnSala tiempo = repo.findByUsername(username).orElse(new TiempoEnSala());
-        tiempo.setUsername(username);
-        tiempo.setInicio(LocalDateTime.now());
-        tiempo.setActivo(true);
-        return repo.save(tiempo);
+    public TiempoEnSala iniciar(String username, String iniciadoPor) {
+        Optional<TiempoEnSala> activo = repo.findByUsernameAndActivoTrue(username);
+        if (activo.isPresent()) {
+            throw new RuntimeException("Ya hay un tiempo activo para este usuario");
+        }
+
+        TiempoEnSala nuevo = new TiempoEnSala();
+        nuevo.setUsername(username);
+        nuevo.setInicio(LocalDateTime.now());
+        nuevo.setActivo(true);
+        nuevo.setIniciadoPor(iniciadoPor); // 👈 Aquí se guarda el iniciador
+
+        return repo.save(nuevo);
     }
 
+
+
     public TiempoEnSala detener(String username) {
-        Optional<TiempoEnSala> tiempoOpt = repo.findByUsername(username);
+        Optional<TiempoEnSala> tiempoOpt = repo.findByUsernameAndActivoTrue(username);
 
         if (tiempoOpt.isPresent()) {
             TiempoEnSala tiempo = tiempoOpt.get();
@@ -46,7 +55,7 @@ public class TiempoService {
     }
 
     public TiempoEnSala obtenerTiempo(String username) {
-        return repo.findByUsername(username).orElse(null);
+        return repo.findByUsernameAndActivoTrue(username).orElse(null);
     }
 
     public List<TiempoEnSala> obtenerTodos() {

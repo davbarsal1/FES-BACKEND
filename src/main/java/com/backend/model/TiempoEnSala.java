@@ -16,8 +16,16 @@ public class TiempoEnSala {
     private long segundosTotales = 0; // tiempo acumulado
     private LocalDateTime inicio;     // cuando se inició la sesión
     private boolean activo = false;   // si está en sala
-
+    private String iniciadoPor;
     // Getters y Setters...
+
+    public String getIniciadoPor() {
+        return iniciadoPor;
+    }
+
+    public void setIniciadoPor(String iniciadoPor) {
+        this.iniciadoPor = iniciadoPor;
+    }
 
     public String getId() { return id; }
     public String getUsername() { return username; }

@@ -17,8 +17,8 @@ public class TiempoController {
     }
 
     @PostMapping("/iniciar")
-    public TiempoEnSala iniciar(@RequestParam String username) {
-        return service.iniciar(username);
+    public TiempoEnSala iniciar(@RequestParam String username, @RequestParam String iniciadoPor) {
+        return service.iniciar(username, iniciadoPor);
     }
 
     @PostMapping("/detener")
