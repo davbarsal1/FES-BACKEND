@@ -12,16 +12,22 @@ public class TiempoEnSala {
     private String id;
 
     private String username;
+    private String iniciadoPor;
+    private String estado = "NORMAL"; // puede ser NORMAL, PUBLICIDAD o ACTIVIDAD
 
-    private long segundosTotales = 0; // tiempo acumulado
-    private LocalDateTime inicio;     // cuando se inició la sesión
-    private boolean activo = false;   // si está en sala
-
-    // Getters y Setters...
+    private long segundosTotales = 0;
+    private LocalDateTime inicio;
+    private boolean activo = false;
 
     public String getId() { return id; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
+
+    public String getIniciadoPor() { return iniciadoPor; }
+    public void setIniciadoPor(String iniciadoPor) { this.iniciadoPor = iniciadoPor; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 
     public long getSegundosTotales() { return segundosTotales; }
     public void setSegundosTotales(long segundosTotales) { this.segundosTotales = segundosTotales; }
@@ -31,4 +37,5 @@ public class TiempoEnSala {
 
     public boolean isActivo() { return activo; }
     public void setActivo(boolean activo) { this.activo = activo; }
+
 }

@@ -3,6 +3,8 @@ package com.backend.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Map;
+
 @Document(collection = "usuarios")
 public class User {
     @Id
@@ -12,7 +14,41 @@ public class User {
     private String email;
     private String password;
     private RANGO rango;
+    private String rangoEspecifico;
     private UserType userType;
+    private int idUser;
+    private Map<Ventaja, Integer> ventajas;
+    public String getId() {
+        return id;
+    }
+
+    public Map<Ventaja, Integer> getVentajas() {
+        return ventajas;
+    }
+
+    public void setVentajas(Map<Ventaja, Integer> ventajas) {
+        this.ventajas = ventajas;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRangoEspecifico() {
+        return rangoEspecifico;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public void setRangoEspecifico(String rangoEspecifico) {
+        this.rangoEspecifico = rangoEspecifico;
+    }
 
     public RANGO getRango() {
         return rango;
@@ -22,23 +58,17 @@ public class User {
         this.rango = rango;
     }
 
-    // Constructor con parámetros
-    public User(String username, String habbousername, String email, String password, UserType userType) {
+    public User(String username, int idUser, String habbousername, String email, String password, RANGO rango, String rangoEspecifico, UserType userType) {
         this.username = username;
         this.habbousername = habbousername;
         this.email = email;
         this.password = password;
+        this.rango = rango;
+        this.rangoEspecifico = rangoEspecifico;
         this.userType = userType;
+        this.idUser = idUser;
     }
 
-    // Getters y Setters
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;

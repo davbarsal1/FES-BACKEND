@@ -61,6 +61,17 @@ public class UserService {
         userChanged.ifPresent(userRepository::save);
     }
 
+    public void cambiarRangoEspecifico(String username, String rangoEspecifico) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setRangoEspecifico(rangoEspecifico);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+    }
+
     public void cambiarRango(String username, String rango) {
         Optional<User> userChanged = findByUsername(username);
         userChanged.ifPresent(value -> value.setRango(RANGO.valueOf(rango)));
@@ -70,5 +81,9 @@ public class UserService {
     public void deleteUser(String username) {
 
         userRepository.delete(findByUsername(username).get());
+    }
+
+    public void deleteAll() {
+        userRepository.deleteAll();
     }
 }

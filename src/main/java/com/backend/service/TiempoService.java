@@ -18,13 +18,23 @@ public class TiempoService {
         this.repo = repo;
     }
 
-    public TiempoEnSala iniciar(String username) {
+    public TiempoEnSala iniciar(String username, String iniciadoPor) {
         TiempoEnSala tiempo = repo.findByUsername(username).orElse(new TiempoEnSala());
         tiempo.setUsername(username);
         tiempo.setInicio(LocalDateTime.now());
         tiempo.setActivo(true);
+        tiempo.setIniciadoPor(iniciadoPor);
+        tiempo.setEstado("NORMAL");
         return repo.save(tiempo);
     }
+
+    public void actualizarEstado(String username, String estado) {
+        TiempoEnSala tiempo = repo.findByUsername(username).orElse(new TiempoEnSala());
+        tiempo.setUsername(username);
+        tiempo.setEstado(estado);
+        repo.save(tiempo);
+    }
+
 
     public TiempoEnSala detener(String username) {
         Optional<TiempoEnSala> tiempoOpt = repo.findByUsername(username);
@@ -51,5 +61,17 @@ public class TiempoService {
 
     public List<TiempoEnSala> obtenerTodos() {
         return repo.findAll();
+    }
+
+    public TiempoEnSala cambiarEstado(String username, String estado) {
+        TiempoEnSala tiempo = repo.findByUsername(username).orElseThrow(() ->
+                new RuntimeException("Usuario no encontrado"));
+
+        tiempo.setEstado(estado);
+        return repo.save(tiempo);
+    }
+
+    public void reiniciar() {
+        repo.deleteAll();
     }
 }

@@ -149,4 +149,37 @@ public class UserController {
             return ResponseEntity.status(408).body("Vuelva a intentarlo en unos segundos...");
         }
     }
+
+    @DeleteMapping("/deleteAll")
+    public ResponseEntity<?> deleteAll() {
+        try {
+            CompletableFuture<? extends ResponseEntity<?>> future = CompletableFuture.supplyAsync(() -> {
+                userService.deleteAll();
+                return  ResponseEntity.ok("Usuarios borrados");
+            }, executor).orTimeout(5, TimeUnit.SECONDS);
+
+            return future.get();
+        } catch (Exception e) {
+            return ResponseEntity.status(408).body("Vuelva a intentarlo en unos segundos...");
+        }
+    }
+
+    @PostMapping("/cambiarMision")
+    public ResponseEntity<?> cambiarMision(@RequestParam String rangoEspecifico, @RequestParam String username) {
+        try {
+            CompletableFuture<ResponseEntity<String>> future = CompletableFuture.supplyAsync(() -> {
+                try {
+                    userService.cambiarRangoEspecifico(username, rangoEspecifico);
+                    return ResponseEntity.ok("Misión actualizada");
+                } catch (Exception e) {
+                    return ResponseEntity.badRequest().body(e.getMessage());
+                }
+            }, executor).orTimeout(5, TimeUnit.SECONDS);
+
+            return future.get();
+        } catch (Exception e) {
+            return ResponseEntity.status(408).body("Vuelva a intentarlo en unos segundos...");
+        }
+    }
+
 }
