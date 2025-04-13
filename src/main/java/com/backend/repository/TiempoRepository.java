@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface TiempoRepository extends MongoRepository<TiempoEnSala, String> {
     Optional<TiempoEnSala> findByUsernameAndActivoTrue(String username);
+
+    Optional<TiempoEnSala> findByUsername(String username);
 }
