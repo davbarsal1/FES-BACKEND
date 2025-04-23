@@ -16,7 +16,7 @@ public class SecurityConfig {
                 registry.addMapping("/api/**")
                         .allowedOrigins(
                                 "http://localhost:5173",
-                                "https://fes-frontend-three.vercel.app" // 👈 Añadido dominio de producción
+                                "https://ejercitofes.com" // 👈 Añadido dominio de producción
                         )
                         .allowedMethods("POST", "GET", "PUT", "DELETE")
                         .allowedHeaders("*")
