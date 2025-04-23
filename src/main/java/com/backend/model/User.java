@@ -3,6 +3,7 @@ package com.backend.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 @Document(collection = "usuarios")
@@ -17,16 +18,16 @@ public class User {
     private String rangoEspecifico;
     private UserType userType;
     private int idUser;
-    private Map<Ventaja, Integer> ventajas;
+    private Map<Ventaja, LocalDate> ventajas;
     public String getId() {
         return id;
     }
 
-    public Map<Ventaja, Integer> getVentajas() {
+    public Map<Ventaja, LocalDate> getVentajas() {
         return ventajas;
     }
 
-    public void setVentajas(Map<Ventaja, Integer> ventajas) {
+    public void setVentajas(Map<Ventaja, LocalDate> ventajas) {
         this.ventajas = ventajas;
     }
 

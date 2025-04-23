@@ -1,6 +1,7 @@
 package com.backend.controller;
 
 import com.backend.model.User;
+import com.backend.model.Ventaja;
 import com.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -80,6 +81,46 @@ public class UserController {
 
             return future.get();
 
+        } catch (Exception e) {
+            return ResponseEntity.status(408).body("Vuelva a intentarlo en unos segundos...");
+        }
+    }
+
+    @PostMapping("/agregarVentaja")
+    public ResponseEntity<?> agregarVentaja(
+            @RequestParam String username,
+            @RequestParam String ventaja
+    ) {
+        try {
+            CompletableFuture<ResponseEntity<String>> future = CompletableFuture.supplyAsync(() -> {
+                try {
+                    userService.agregarVentaja(username, ventaja);
+                    return ResponseEntity.ok("Ventaja añadida correctamente");
+                } catch (Exception e) {
+                    return ResponseEntity.badRequest().body(e.getMessage());
+                }
+            }, executor).orTimeout(5, TimeUnit.SECONDS);
+            return future.get();
+        } catch (Exception e) {
+            return ResponseEntity.status(408).body("Vuelva a intentarlo en unos segundos...");
+        }
+    }
+
+    @PostMapping("/eliminarVentaja")
+    public ResponseEntity<?> eliminarVentaja(
+            @RequestParam String username,
+            @RequestParam String ventaja
+    ) {
+        try {
+            CompletableFuture<ResponseEntity<String>> future = CompletableFuture.supplyAsync(() -> {
+                try {
+                    userService.eliminarVentaja(username, ventaja);
+                    return ResponseEntity.ok("Ventaja eliminada correctamente");
+                } catch (Exception e) {
+                    return ResponseEntity.badRequest().body(e.getMessage());
+                }
+            }, executor).orTimeout(5, TimeUnit.SECONDS);
+            return future.get();
         } catch (Exception e) {
             return ResponseEntity.status(408).body("Vuelva a intentarlo en unos segundos...");
         }

@@ -3,11 +3,15 @@ package com.backend.service;
 import com.backend.model.RANGO;
 import com.backend.model.User;
 import com.backend.model.UserType;
+import com.backend.model.Ventaja;
 import com.backend.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -86,4 +90,27 @@ public class UserService {
     public void deleteAll() {
         userRepository.deleteAll();
     }
+
+    public void agregarVentaja(String username, String nombreVentaja) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Ventaja ventaja = Ventaja.valueOf(nombreVentaja.toUpperCase());
+        if (user.getVentajas() == null) {
+            user.setVentajas(new HashMap<>());
+        }
+        user.getVentajas().put(ventaja, LocalDate.now());
+        userRepository.save(user);
+    }
+
+    public void eliminarVentaja(String username, String nombreVentaja) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Ventaja ventaja = Ventaja.valueOf(nombreVentaja.toUpperCase());
+        if (user.getVentajas() != null) {
+            user.getVentajas().remove(ventaja);
+        }
+        userRepository.save(user);
+    }
+
+
 }

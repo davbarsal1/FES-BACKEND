@@ -8,5 +8,5 @@ public enum Ventaja {
     SCORPION, // TIME PDA PUBLI 50% - 40c
     PELICAN, // Ropa libre - 20c
     FORERUNNER, // TIME PDA PUBLI ROPA LIBRE GUARDA PAGA - 50c
-    GUARDAPAGA, //
+    GUARDAPAGA, // Guarda paga un total de 72h - 35c
 }
