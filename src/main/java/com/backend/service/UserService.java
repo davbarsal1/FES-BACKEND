@@ -1,9 +1,6 @@
 package com.backend.service;
 
-import com.backend.model.RANGO;
-import com.backend.model.User;
-import com.backend.model.UserType;
-import com.backend.model.Ventaja;
+import com.backend.model.*;
 import com.backend.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +16,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private TiempoService tiempoService;
+    private PublicidadService publicidadService;
+    public ActividadService actividadService;
 
     public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -112,5 +112,52 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public boolean requisitosCumplidos(User user) {
+        int horas = 0;
+        int publicidades = 0;
+        double pdas = 0.;
+
+        double pdasObtenidos = actividadService.obtenerPDAsPorUsuario(user.getUsername());
+        int publicidadObtenidas = publicidadService.porUsuario(user.getUsername()).size();
+        int horasObtenidas = (int) (tiempoService.obtenerTiempo(user.getUsername()).getSegundosTotales()/3600);
+
+        switch (user.getRango()) {
+            case MARINE -> {
+                horas = 8; pdas = 4.;
+            }
+            case SUBOFICIAL -> {
+                horas = 12; pdas = 5.; publicidades = 6;
+            }
+            case OFICIALALUMNO -> {
+                horas = 15; pdas = 5.; publicidades = 6;
+            }
+            case OFICIAL -> {
+                horas = 20; pdas = 8.; publicidades = 4;
+            }
+            case OFICIALGENERAL -> {
+                horas = 25; pdas = 10.; publicidades = 2;
+            }
+        }
+
+        // Ajustar con ventajas
+        boolean tieneScorpion = user.getVentajas().containsKey(Ventaja.SCORPION);
+        boolean tieneForerunner = user.getVentajas().containsKey(Ventaja.FORERUNNER);
+        boolean tieneCobra = user.getVentajas().containsKey(Ventaja.COBRA);
+        boolean tieneGrizzly = user.getVentajas().containsKey(Ventaja.GRIZZLY);
+
+        if (tieneScorpion || tieneForerunner) {
+            horas /= 2;
+            pdas /= 2;
+            publicidades /= 2;
+        } else {
+            if (tieneCobra) horas /= 2;
+            if (tieneGrizzly) {
+                pdas /= 2;
+                publicidades /= 2;
+            }
+        }
+
+        return pdasObtenidos >= pdas && publicidadObtenidas >= publicidades && horasObtenidas >= horas;
+    }
 
 }

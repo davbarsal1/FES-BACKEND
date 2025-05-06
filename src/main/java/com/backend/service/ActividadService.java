@@ -1,6 +1,7 @@
 package com.backend.service;
 
 import com.backend.model.Actividad;
+import com.backend.model.User;
 import com.backend.repository.ActividadRepository;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,17 @@ public class ActividadService {
             }
         }
         return pdaMap;
+    }
+
+    public Double obtenerPDAsPorUsuario(String username){
+        Double pdas = 0.;
+        for(Actividad a: repo.findAll()){
+            if(a.getParticipantes().containsKey(username)){
+                Double pdaConseguido =  a.getParticipantes().get(username);
+                pdas += pdaConseguido;
+            }
+        }
+        return pdas;
     }
 
 

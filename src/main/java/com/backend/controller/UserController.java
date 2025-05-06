@@ -162,6 +162,27 @@ public class UserController {
         }
     }
 
+    @GetMapping("/requisitos-cumplidos")
+    public ResponseEntity<?> requisitosCumplidos(@RequestParam String username) {
+        try {
+            CompletableFuture<ResponseEntity<Boolean>> future = CompletableFuture.supplyAsync(() -> {
+                Optional<User> userOpt = userService.findByUsername(username);
+                if (userOpt.isEmpty()) {
+                    return ResponseEntity.status(404).body(false);
+                }
+
+                boolean cumple = userService.requisitosCumplidos(userOpt.get());
+                return ResponseEntity.ok(cumple);
+            }, executor).orTimeout(5, TimeUnit.SECONDS);
+
+            return future.get();
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al evaluar requisitos");
+        }
+    }
+
+
     @GetMapping("/getUser")
     public ResponseEntity<?> getUser(@RequestParam String username) {
         try {

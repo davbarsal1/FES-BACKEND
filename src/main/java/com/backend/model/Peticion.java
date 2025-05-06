@@ -12,6 +12,16 @@ public class Peticion {
     private String username; // quien hace la petición
     private RANGO rango;     // nuevo rango solicitado (opcional)
     private UserType userType; // nuevo tipo solicitado (opcional)
+    private String rangoEspecifico;
+
+    public String getRangoEspecifico() {
+        return rangoEspecifico;
+    }
+
+    public void setRangoEspecifico(String rangoEspecifico) {
+        this.rangoEspecifico = rangoEspecifico;
+    }
+
     private String texto;    // motivo de la solicitud
 
     private EstadoPeticion estado = EstadoPeticion.PENDIENTE;
