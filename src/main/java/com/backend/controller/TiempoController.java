@@ -49,4 +49,10 @@ public class TiempoController {
         service.reiniciar();
         return ResponseEntity.ok("Borrado exitosamente");
     }
+
+    @PostMapping("/añadirTiempo")
+    public ResponseEntity<?> añadirTiempo(@RequestParam String username, @RequestParam long segundos){
+        service.añadirTiempo(username,segundos);
+        return ResponseEntity.ok("Añadido exitosamente");
+    }
 }

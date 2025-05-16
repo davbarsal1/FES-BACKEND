@@ -2,6 +2,8 @@ package com.backend.service;
 
 import com.backend.model.TiempoEnSala;
 import com.backend.repository.TiempoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -17,6 +19,7 @@ public class TiempoService {
     public TiempoService(TiempoRepository repo) {
         this.repo = repo;
     }
+    private static final Logger LOGGER = LoggerFactory.getLogger(TiempoService.class);
 
     public TiempoEnSala iniciar(String username, String iniciadoPor) {
         TiempoEnSala tiempo = repo.findByUsername(username).orElse(new TiempoEnSala());
@@ -73,5 +76,16 @@ public class TiempoService {
 
     public void reiniciar() {
         repo.deleteAll();
+    }
+
+    public void añadirTiempo(String username, long segundos ){
+
+        for(TiempoEnSala t: repo.findAll()){
+            if(t.getUsername().equals(username)){
+                t.setSegundosTotales(segundos);
+                repo.save(t);
+            }
+        }
+
     }
 }
