@@ -78,7 +78,7 @@ public class TiempoService {
         repo.deleteAll();
     }
 
-    public void añadirTiempo(String username, long segundos ){
+    public void anadirTiempo(String username, long segundos ){
 
         for(TiempoEnSala t: repo.findAll()){
             if(t.getUsername().equals(username)){

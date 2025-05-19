@@ -71,6 +71,15 @@ public class UserService {
         userChanged.ifPresent(userRepository::save);
     }
 
+    public void borrarUsuarioPorUsername(String username){
+        User user = userRepository.findByUsername(username).get();
+        userRepository.delete(user);
+    }
+
+    public void borrarUsuarioPorId(String id){
+        User user = userRepository.findById(id).get();
+        userRepository.delete(user);
+    }
     public void cambiarRangoEspecifico(String username, String rangoEspecifico) {
         Optional<User> userOpt = userRepository.findByUsername(username);
         if (userOpt.isPresent()) {
